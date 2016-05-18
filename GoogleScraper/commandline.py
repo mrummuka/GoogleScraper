@@ -34,7 +34,7 @@ def get_command_line(only_print_help=False):
 
     parser.add_argument('-r', '--remote-uri', type=str, action='store', default='http://localhost:4444/wd/hub',
                         help='URI for connecting with remote selenium/chrome installation.' 
-			     'Only necessary if --sel-browser=remotechrome has been chosen.')
+                        'Only necessary if --sel-browser=remotechrome has been chosen.')
 
 
     keyword_group = parser.add_mutually_exclusive_group()

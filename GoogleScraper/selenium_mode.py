@@ -136,7 +136,7 @@ class SelScrape(SearchEngineScrape, threading.Thread):
         self.browser_num = browser_num
         self.captcha_lock = captcha_lock
         self.scrape_method = 'selenium'
-	self.remote_browser-uri = self.config.get('--remote-uri')
+        self.remote_browser-uri = self.config.get('--remote-uri')
 
 
         self.xvfb_display = self.config.get('xvfb_display', None)
@@ -211,8 +211,8 @@ class SelScrape(SearchEngineScrape, threading.Thread):
             return self._get_Firefox()
         elif self.browser_type == 'phantomjs':
             return self._get_PhantomJS()
-  	elif self.browser_type == 'remotechrome':
- 	    return self._get_RemoteChrome()
+        elif self.browser_type == 'remotechrome':
+            return self._get_RemoteChrome()
 
         return False
 
