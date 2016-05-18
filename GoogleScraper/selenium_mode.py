@@ -218,7 +218,9 @@ class SelScrape(SearchEngineScrape, threading.Thread):
 
     def _get_RemoteChrome(self):
         try:
-            self.webdriver = webdriver.Remote(command_executor=self.remote_browser_uri)#service_log_path='/tmp/chromedriver_log.log')
+            self.webdriver = webdriver.Remote(
+            	desired_capabilities=webdriver.DesiredCapabilities.CHROME, 
+            	command_executor=self.remote_browser_uri)
             return True
         except WebDriverException as e:
             # we don't have a chrome executable or a chrome webdriver installed
