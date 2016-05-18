@@ -209,7 +209,18 @@ class SelScrape(SearchEngineScrape, threading.Thread):
             return self._get_Firefox()
         elif self.browser_type == 'phantomjs':
             return self._get_PhantomJS()
+  	elif self.browser_type == 'remotechrome':
+ 	    return self._get_RemoteChrome()
 
+        return False
+
+    def _get_RemoteChrome(self):
+        try:
+            self.webdriver = webdriver.Remote(command_executor='http://localhost:4444/wd/hub')#service_log_path='/tmp/chromedriver_log.log')
+            return True
+        except WebDriverException as e:
+            # we don't have a chrome executable or a chrome webdriver installed
+            raise
         return False
 
     def _get_Chrome(self):
