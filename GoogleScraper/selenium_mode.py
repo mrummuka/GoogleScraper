@@ -136,7 +136,7 @@ class SelScrape(SearchEngineScrape, threading.Thread):
         self.browser_num = browser_num
         self.captcha_lock = captcha_lock
         self.scrape_method = 'selenium'
-        self.remote_browser-uri = self.config.get('--remote-uri')
+        self.remote_browser_uri = self.config.get('remote_uri')
 
 
         self.xvfb_display = self.config.get('xvfb_display', None)
@@ -218,7 +218,7 @@ class SelScrape(SearchEngineScrape, threading.Thread):
 
     def _get_RemoteChrome(self):
         try:
-            self.webdriver = webdriver.Remote(command_executor=self.remote_browser-uri)#service_log_path='/tmp/chromedriver_log.log')
+            self.webdriver = webdriver.Remote(command_executor=self.remote_browser_uri)#service_log_path='/tmp/chromedriver_log.log')
             return True
         except WebDriverException as e:
             # we don't have a chrome executable or a chrome webdriver installed

@@ -32,7 +32,7 @@ def get_command_line(only_print_help=False):
     parser.add_argument('--sel-browser', choices=['firefox', 'chrome', 'phantomjs', 'remotechrome'], default='phantomjs',
                         help='The browser frontend for selenium scraping mode. Does only make sense if --scrape-method is set to "selenium"')
 
-    parser.add_argument('-r', '--remote-uri', type=str, action='store', default='http://localhost:4444/wd/hub',
+    parser.add_argument('--remote-uri', type=str, action='store', default='http://localhost:4444/wd/hub',
                         help='URI for connecting with remote selenium/chrome installation.' 
                         'Only necessary if --sel-browser=remotechrome has been chosen.')
 
