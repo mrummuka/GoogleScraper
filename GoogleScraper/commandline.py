@@ -50,8 +50,10 @@ def get_command_line(only_print_help=False):
                                     'jobs".')
 
     parser.add_argument('-o-', '--output-filename', type=str, action='store', default='',
-                        help='The name of the output file. If the file ending is "json", write a json file, if the '
-                             'ending is "csv", write a csv file.')
+                        help='The name of the output file. The formatting of the file is controlled by --output-format' )
+
+    parser.add_argument('--output-format', type=str, action='store', default='',
+                        help='The format of output: json | csv | stdout (plain python array)')
 
     parser.add_argument('--shell', action='store_true', default=False,
                         help='Fire up a shell with a loaded sqlalchemy session.')

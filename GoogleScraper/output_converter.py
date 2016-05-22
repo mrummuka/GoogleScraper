@@ -39,6 +39,23 @@ class JsonStreamWriter():
         self.file.write(']')
         self.file.close()
 
+class JsonWriter():
+    """Writes consecutive objects to an json stdout."""
+
+    def __init__(self, stream):
+        self.file = stream
+        self.file.write('[')
+        self.last_object = None
+
+    def write(self, obj):
+        if self.last_object:
+            self.file.write(',')
+        json.dump(obj, self.file, indent=2, sort_keys=True)
+        self.last_object = id(obj)
+
+    def end(self):
+        self.file.write(']')
+
 
 class CsvStreamWriter():
     """
@@ -63,6 +80,29 @@ class CsvStreamWriter():
     def end(self):
         self.file.close()
 
+class CsvWriter():
+    """
+    Writes consecutive objects to an csv output file.
+    """
+    def __init__(self, stream):
+        # every row in the csv output file should contain all fields
+        # that are in the table definition. Except the id, they have the
+        # same name in both tables
+        self.file = stream
+        self.dict_writer = csv.DictWriter(self.file, fieldnames=csv_fieldnames, delimiter=',')
+        self.dict_writer.writeheader()
+
+    def write(self, data, serp):
+        # one row per link
+        for row in data['results']:
+            d = row2dict(serp)
+            d.update(row)
+            d = ({k: v if type(v) is str else v for k, v in d.items() if k in csv_fieldnames})
+            self.dict_writer.writerow(d)
+
+    def end(self):
+        self.file = self.file
+
 
 def init_outfile(config, force_reload=False):
     global outfile, output_format
@@ -70,20 +110,22 @@ def init_outfile(config, force_reload=False):
     if not outfile or force_reload:
 
         output_file = config.get('output_filename', '')
-
-        if output_file.endswith('.json'):
-            output_format = 'json'
-        elif output_file.endswith('.csv'):
-            output_format = 'csv'
+        output_format = config.get('output_format', '')
 
         # the output files. Either CSV or JSON or STDOUT
         # It's little bit tricky to write the JSON output file, since we need to
         # create the array of the most outer results ourselves because we write
         # results as soon as we get them (it's impossible to hold the whole search in memory).
         if output_format == 'json':
-            outfile = JsonStreamWriter(output_file)
+            if output_file != '' :
+                outfile = JsonStreamWriter(output_file)
+            else: 
+                outfile = JsonWriter(sys.stdout)
         elif output_format == 'csv':
-            outfile = CsvStreamWriter(output_file)
+            if output_file != '' :
+                outfile = CsvStreamWriter(output_file)
+            else: 
+                outfile = CsvWriter(sys.stdout)
         elif output_format == 'stdout':
             outfile = sys.stdout
 
